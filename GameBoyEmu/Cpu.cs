@@ -17,7 +17,7 @@ public class Cpu
       _OPcodesHandler = new OPcodesHandler(_registers, _memory);
       _registers.pc = 0x00;
 
-      while (_registers.pc < 0xFFFF)
+      while (_registers.pc < _memory.Length())
       {
          // Console.WriteLine(_registers.pc);
          Execute((ushort) _memory.Read8(_registers.pc));
@@ -29,10 +29,9 @@ public class Cpu
       _OPcodesHandler.OPcodes.TryGetValue(opCode, out var val);
       if (val.Name == "PREFIX CB")
       {
+         Console.WriteLine("IN CB");
          _CB_OPcodesHandler.OPcodes.TryGetValue((ushort) _memory.Read8(_registers.pc + 1), out val);
-         _registers.pc++;
       }
-      // Console.WriteLine(val.Name +"; " + "0x" + _registers.pc.ToString("x4") );
       var tolog = $"{val.Name,-15}; 0x{_registers.pc.ToString("x4"),4}";
       Console.WriteLine(tolog);
       _registers.pc += val.Length;

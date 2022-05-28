@@ -12,4 +12,9 @@ public class Memory
     {
         return _mem[position];
     }
+
+    public int Length()
+    {
+        return _mem.Length;
+    }
 }
