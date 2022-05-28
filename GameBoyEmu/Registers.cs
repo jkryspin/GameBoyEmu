@@ -1,6 +1,6 @@
 namespace GameBoyEmu;
 
-public struct Registers
+public class Registers
 {
     public byte a;
     public byte b;
@@ -10,7 +10,7 @@ public struct Registers
     public byte f;
     public byte h;
     private byte _l;
-    public UInt16 pc;
+    public UInt16 pc { get; set; }
 
     public byte l
     {

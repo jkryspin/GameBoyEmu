@@ -5,10 +5,12 @@ namespace GameBoyEmu;
 public class CbOPcodesHandler:IOPHandler
 {
     public readonly Dictionary<ushort, OPcode> OPcodes;
+    private readonly Registers _registers;
 
-    public CbOPcodesHandler()
+    public CbOPcodesHandler(Registers registers)
     {
         OPcodes = InitOpcodes();
+        _registers = registers;
     }
 
     public sealed override Dictionary<ushort, OPcode> InitOpcodes()

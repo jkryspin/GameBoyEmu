@@ -5,10 +5,16 @@ namespace GameBoyEmu;
 public class OPcodesHandler : IOPHandler
 {
     public readonly Dictionary<ushort, OPcode> OPcodes;
+    private readonly Registers _registers;
+    private ushort lsb;
+    private ushort msb;
+    private Memory _memory;
 
-    public OPcodesHandler()
+    public OPcodesHandler(Registers registers, Memory memory)
     {
         OPcodes = InitOpcodes();
+        _registers = registers;
+        _memory = memory;
     }
 
     public sealed override Dictionary<ushort, OPcode> InitOpcodes()
@@ -210,7 +216,13 @@ public class OPcodesHandler : IOPHandler
             {0xc0, new OPcode("RET NZ", 1, 0, 4)},
             {0xc1, new OPcode("POP BC", 1, 0, 4)},
             {0xc2, new OPcode("JP NZ,u16", 3, 0, 4)},
-            {0xc3, new OPcode("JP u16", 3, 0, 4)},
+            {0xc3, new OPcode("JP u16", 3, 0, 4, new Step[]{
+                    () =>
+                    {
+                        lsb = _memory.Read8(_registers.pc++);
+                        msb = _memory.Read8(_registers.pc++);
+                        msb = _memory.Read8(_registers.pc++);
+                    },})},
             {0xc4, new OPcode("CALL NZ,u16", 3, 0, 4)},
             {0xc5, new OPcode("PUSH BC", 1, 0, 4)},
             {0xc6, new OPcode("ADD A,u8", 2, 0, 4)},
